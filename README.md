@@ -1,3 +1,11 @@
+<h1 align="center" style="margin: 10px 0 10px; font-weight: bold;">Dora</h1>
+<h4 align="center">a low-latency partial reconfiguration controller</h4>
+
+# Introduction
+- Dora, a low-latency FPGA partial reconfiguration controller, is proposed in this letter to address the latency challenge faced by traditional solutions in highly real-time reconfigurable systems.
+- Based on the producer-consumer model, a streaming transmission mechanism and an adaptive ICAP overclocking clock training algorithm are proposed and integrated into Dora, aiming to achieve efficient production and consumption of configuration bitstreams.
+
+# Structure
 ```txt
 +------+-----------------------------------+---------------------+------+
 |      |Instance                           |Module               |Cells |
@@ -27,3 +35,18 @@
 +------+-----------------------------------+---------------------+------+
 
 ```
+
+# Performance
+Experiments show that Dora reduces FPGA resource utilization by over 60%, achieves a high reconfiguration rate, and slashes latency to 11.1 ms—merely 2.6% of the standard Xilinx solution. This remarkable performance positions Dora as a superior choice for a wide range of scenarios and domains.
+
+
+# How to use
+
+## For secondary development
+All the modules in Dora are self-developed, and it is only necessary to integrate their verilog implementation (/rtl) into the project source code.
+
+## Just for test
+We provide an example (/example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
+1. Configure the demo.bit
+2. Install the xdma driver
+3. Transfer rm0.bin or rm1.bin using driver
