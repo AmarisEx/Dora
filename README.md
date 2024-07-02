@@ -28,6 +28,7 @@
 │   │   ├── edge_dect.v
 │   │   ├── gray_code_sync.v
 │   │   ├── icap_ctrl.v
+│   │   ├── mmcm_drp.v
 │   │   ├── perf_mon.v
 │   │   ├── prc_reg.v
 │   │   ├── prc_top.v
