@@ -29,9 +29,9 @@ input clk;
 input resetn;
 
 // record
-output start;
-output done;
-output err;
+output reg start;
+output reg done;
+output reg err;
 
 // axi stream slave
 input        s_axis_tvalid;
@@ -55,9 +55,38 @@ assign s_axis_tready = 1'b1;
 assign icap_csib = ~(s_axis_tvalid & s_axis_tready);
 assign icap_din  = s_axis_tdata;
 
-assign start = ~icap_csib;
-assign done  = ~icap_dout[6];
-assign err   = ~icap_dout[7];
+// assign start = ~icap_csib;
+// assign done  = ~icap_dout[6];
+// assign err   = ~icap_dout[7];
+
+// opt timing - reg out
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        start <= 'b0;
+    end
+    else begin
+        start <= ~icap_csib;
+    end
+end
+
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        done <= 'b0;
+    end
+    else begin
+        // done <= ~icap_dout[6];
+        done <= icap_csib; // opt timing - icap_dout is metastable
+    end
+end
+
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        err <= 'b0;
+    end
+    else begin
+        err <= ~icap_dout[7];
+    end
+end
 
 // ICAPE2: Internal Configuration Access Port
 // 7 Series
@@ -73,7 +102,7 @@ ICAPE2 #(
     .RDWRB  (1'b0)       // 1-bit input: Read/Write Select input
 );
 
-// `ifdef DEBUG
+`ifdef DEBUG
 
 ila_icap_ctrl u_ila_icap_ctrl (
     .clk     (clk),
@@ -88,7 +117,7 @@ ila_icap_ctrl u_ila_icap_ctrl (
     .probe8  (done)
 );
 
-// `endif
+`endif
 
 
 endmodule

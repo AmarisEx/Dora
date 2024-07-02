@@ -20,17 +20,18 @@ output s_sync;
 
 reg s_r;
 reg s_rr;
+reg s_rrr;
 
 always @(posedge clk or negedge resetn) begin
     if (~resetn) begin
-        {s_r, s_rr}  <= 2'b0;
+        {s_r, s_rr, s_rrr}  <= 3'b0;
     end
     else begin
-        {s_r, s_rr}  <= {s, s_r};
+        {s_r, s_rr, s_rrr}  <= {s, s_r, s_rr};
     end
 end
 
-assign s_sync = s_rr;
+assign s_sync = s_rrr;
 
 
 endmodule

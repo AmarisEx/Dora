@@ -21,6 +21,7 @@ input pos;  // 1: pos, 0: neg
 output s_edge;
 
 reg s_r;
+reg s_edge_r;
 
 always @(posedge clk or negedge resetn) begin
     if (~resetn) begin
@@ -31,7 +32,17 @@ always @(posedge clk or negedge resetn) begin
     end
 end
 
-assign s_edge = pos ? (s & ~s_r) : (~s & s_r);
+// opt timing - b2c cnt setup
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        s_edge_r <= 1'b0;
+    end
+    else begin
+        s_edge_r <= pos ? (s & ~s_r) : (~s & s_r);
+    end
+end
+
+assign s_edge = s_edge_r;
 
 
 endmodule

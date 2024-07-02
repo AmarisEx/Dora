@@ -129,6 +129,8 @@ wire [CYC_CNT_WIDTH-1:0] h2b_cyc_cnt;
 wire [CYC_CNT_WIDTH-1:0] b2c_cyc_cnt;
 wire [CYC_CNT_WIDTH-1:0] h2c_cyc_cnt;
 
+wire [CYC_CNT_WIDTH-1:0] b2c_cyc_cnt_sync;
+
 // axil slave
 wire        m0_wen;
 wire [31:0] m0_waddr;
@@ -258,7 +260,7 @@ prc_reg #(
     .config_done         (icap_config_done),
     .config_err          (config_err),
     .h2b_cyc_cnt         (h2b_cyc_cnt),
-    .b2c_cyc_cnt         (b2c_cyc_cnt),
+    .b2c_cyc_cnt         (b2c_cyc_cnt_sync),
     .h2c_cyc_cnt         (h2c_cyc_cnt),
     .config_err_int_req  (config_err_int_req)
 );
@@ -289,6 +291,15 @@ two_stage_sync config_err_two_stage_sync (
     .resetn  (sys_resetn),
     .s       (icap_config_err),
     .s_sync  (config_err)
+);
+
+gray_code_sync # (
+    .WIDTH  (CYC_CNT_WIDTH)
+) u_gray_code_sync (
+    .clk       (sys_clk),
+    .resetn    (sys_resetn),
+    .cnt       (b2c_cyc_cnt),
+    .cnt_sync  (b2c_cyc_cnt_sync)
 );
 
 reg_mux # (

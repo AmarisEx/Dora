@@ -37,8 +37,8 @@ input              rresetn;
 input              ren;
 output [WIDTH-1:0] rdata;
 
-output full;
-output empty;
+output reg full;
+output reg empty;
 
 //****** internal signal ******//
 
@@ -67,7 +67,8 @@ wire mem_ren;
 wire [ADDR_WIDTH-1:0] mem_waddr;
 wire [ADDR_WIDTH-1:0] mem_raddr;
 
-wire empty_ahead;
+reg empty_ahead;
+
 
 //****** internal logic ******//
 
@@ -79,10 +80,39 @@ assign wptr_gray_next = wptr_bin ^ (wptr_bin >> 1);
 assign rptr_gray_next = rptr_bin ^ (rptr_bin >> 1);
 
 // judge fifo full/empty
-assign full  = (wptr_gray_next == {~rptr_gray_rrr[ADDR_WIDTH:ADDR_WIDTH-1], rptr_gray_rrr[ADDR_WIDTH-2:0]});
-assign empty = (rptr_gray == wptr_gray_rrr);
 
-assign empty_ahead = (rptr_gray_next == wptr_gray_rr);  // One cycle ahead of the empty signal
+// assign full  = (wptr_gray_next == {~rptr_gray_rrr[ADDR_WIDTH:ADDR_WIDTH-1], rptr_gray_rrr[ADDR_WIDTH-2:0]});
+// assign empty = (rptr_gray == wptr_gray_rrr);
+
+// opt timing - icap csib(empty->m_axis_tvalid)
+always @(posedge wclk or negedge wresetn) begin
+    if (~wresetn) begin
+        full <= 'b0;
+    end
+    else begin
+        full <= (wptr_gray_next == {~rptr_gray_rrr[ADDR_WIDTH:ADDR_WIDTH-1], rptr_gray_rrr[ADDR_WIDTH-2:0]});
+    end
+end
+
+always @(posedge rclk or negedge rresetn) begin
+    if (~rresetn) begin
+        empty <= 'b0;
+    end
+    else begin
+        empty <= (rptr_gray == wptr_gray_rrr);
+    end
+end
+
+// assign empty_ahead = (rptr_gray_next == wptr_gray_rr);  // One cycle ahead of the empty signal
+
+always @(posedge rclk or negedge rresetn) begin
+    if (~rresetn) begin
+        empty_ahead <= 'b0;
+    end
+    else begin
+        empty_ahead <= (rptr_gray_next == wptr_gray_rr); // One cycle ahead of the empty signal
+    end
+end
 
 // ram memory
 assign mem_wen = wen & ~full;

@@ -28,8 +28,9 @@ input               clk;
 input               resetn;
 input  [IWIDTH-1:0] din;
 input               en;
-output [OWIDTH-1:0] dout;
-output              done;
+
+output reg [OWIDTH-1:0] dout;
+output reg              done;
 
 //****** internal signal ******//
 
@@ -39,8 +40,6 @@ reg [IWIDTH-1:0] din_r;
 reg [OWIDTH-1:0] dout_lut [AMOUNT-1:0];
 
 //****** internal logic ******//
-
-assign done = (cnt_r == 'b0);
 
 // register din
 always @(posedge clk or negedge resetn) begin
@@ -62,9 +61,6 @@ always @(posedge clk or negedge resetn) begin
     end
 end
 
-// select frag
-assign dout = dout_lut[cnt_r];
-
 genvar i;
 generate
 for (i = 0; i < AMOUNT; i = i + 1) begin
@@ -74,5 +70,27 @@ for (i = 0; i < AMOUNT; i = i + 1) begin
 end
 endgenerate
 
+// assign done = (cnt_r == 'b0);
+
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        done <= 'b0;
+    end
+    else begin
+        done <= (cnt_r == 'b0);
+    end
+end
+
+// select frag
+// assign dout = dout_lut[cnt_r];
+
+always @(posedge clk or negedge resetn) begin
+    if (~resetn) begin
+        dout <= 'b0;
+    end
+    else begin
+        dout <= dout_lut[cnt_r];
+    end
+end
 
 endmodule

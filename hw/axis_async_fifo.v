@@ -147,19 +147,19 @@ width_convert #(
     .done    (frag_done)
 );
 
-ila_async_fifo u_ila_async_fifo_wclk (
-    .clk     (wclk),
-    .probe0  (fifo_wen),
-    .probe1  (fifo_wdata),
-    .probe2  (fifo_full)
-);
+// ila_async_fifo u_ila_async_fifo_wclk (
+//     .clk     (wclk),
+//     .probe0  (fifo_wen),
+//     .probe1  (fifo_wdata),
+//     .probe2  (fifo_full)
+// );
 
-ila_async_fifo u_ila_async_fifo_rclk (
-    .clk     (rclk),
-    .probe0  (fifo_ren),
-    .probe1  (fifo_rdata),
-    .probe2  (fifo_empty)
-);
+// ila_async_fifo u_ila_async_fifo_rclk (
+//     .clk     (rclk),
+//     .probe0  (fifo_ren),
+//     .probe1  (fifo_rdata),
+//     .probe2  (fifo_empty)
+// );
 
 
 endmodule
