@@ -64,23 +64,7 @@ assign dwe = wen;
 assign wrdy = drdy;
 assign rrdy = drdy;
 
-// mmcm_drp u_mmcm_drp (
-//     .clk_in1   (i_clk),
-//     .resetn    (i_resetn),
-//     .clk_out1  (o_clk1),
-//     .clk_out2  (o_clk2),
-//     .locked    (o_resetn),
-//     // drp
-//     .daddr     (daddr),
-//     .dclk      (i_clk),
-//     .den       (den),
-//     .din       (din),
-//     .dout      (dout),
-//     .drdy      (drdy),
-//     .dwe       (dwe)
-// );
-
-mmcm_drp_xilinx u_mmcm_drp_xilinx (
+mmcm_drp u_mmcm_drp (
     .clk_in1   (i_clk),
     .resetn    (i_resetn),
     .clk_out1  (o_clk1),
@@ -95,6 +79,5 @@ mmcm_drp_xilinx u_mmcm_drp_xilinx (
     .drdy      (drdy),
     .dwe       (dwe)
 );
-
 
 endmodule
