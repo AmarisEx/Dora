@@ -6,8 +6,6 @@ sdma-objs := sdma_drv.o sdma_hw.o
 
 all: sdma_drv.c sdma_hw.c sdma.h
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
-user: main.c
-	gcc -o main main.c
 install: 
 	sudo rmmod sdma
 	sudo insmod sdma.ko

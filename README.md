@@ -61,8 +61,28 @@ All the modules in Dora are self-developed, and it is only necessary to integrat
 
 ## Just for test
 
-We provide an example (/example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
+We provide an example (./example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
 
-1. Configure the demo.bit
-2. Install the xdma driver
-3. Transfer rm0.bin or rm1.bin using driver
+1. Clone the repository
+   ```
+   git clone git@github.com:AmarisEx/Dora.git
+   ```
+2. Configure the demo.bit
+
+```shell
+set bit_filepath ./example/demo.bit
+write_cfgmem -force -format MCS -size 128 -interface BPIx16 -loadbit "up 0x00000000 $bit_filepath" demo.mcs
+```
+
+3. Install the sdma driver
+
+```
+source ./test/load_driver.sh
+```
+
+4. Transfer rm0.bin or rm1.bin using driver
+
+```shell
+gcc /test/main.c -o main
+sudo ./main /dev/sdma_dev0 2 ./example/rm0.bin
+```

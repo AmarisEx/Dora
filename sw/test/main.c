@@ -11,7 +11,7 @@ void usage(char *program_name)
 {
     printf("Usage: %s <dev_name> <test_mode> [<size>]\n", program_name);
     printf("\tdev_name: /dev/sdma_dev0, /dev/sdma_dev1, /dev/sdma_dev2, /dev/sdma_dev3.\n");
-    printf("\ttest_mode: 0 indicates read and write check. 1 indicates readv and wirtev check.\n");
+    printf("\ttest_mode: 0 indicates read and write check. 1 indicates readv and wirtev check. 2 indicates partial reconfiguration.\n");
 }
 
 void test_rw(int fd, int size)
@@ -137,6 +137,29 @@ fail:
 }
 }
 
+void test_wfile(int fd, char *bitstream)
+{
+    FILE *wfile;
+    char buffer[4096]; // 使用4096字节的缓冲区
+    size_t bytes;
+
+    wfile = fopen(bitstream, "rb");
+    if (wfile == NULL) {
+        fprintf(stderr, "Error opening wfile.\n");
+        return;
+    }
+
+    while ((bytes = fread(buffer, 1, sizeof(buffer), wfile)) > 0) {
+        write(fd, buffer, bytes);
+    }
+
+    if (ferror(wfile)) {
+        fprintf(stderr, "Error reading from input file.\n");
+    }
+
+    fclose(wfile);
+}
+
 int main(int argc, char *argv[])
 {
     if (argc < 3)
@@ -170,6 +193,15 @@ int main(int argc, char *argv[])
             goto fail0;
         }
         test_rwv(fd, strtol(argv[3], NULL, 0));
+        break;
+    }
+    case 2:  // write file
+    {
+        if (argc != 4)
+        {
+            goto fail0;
+        }
+        test_wfile(fd, argv[3]);
         break;
     }
     default:
