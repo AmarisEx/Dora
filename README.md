@@ -5,6 +5,9 @@
 
 - Dora, a low-latency FPGA partial reconfiguration controller, is proposed in this letter to address the latency challenge faced by traditional solutions in highly real-time reconfigurable systems.
 - Based on the producer-consumer model, a SG-streaming-based hybrid reconfiguration mechanism and an adaptive ICAP overclocking clock training method are proposed and integrated into Dora, aiming to achieve efficient production and consumption of configuration bitstreams.
+- Published papers
+  1. [Dora: A Low-Latency Partial Reconfiguration Controller for Reconfigurable System](https://ieeexplore.ieee.org/document/10695778)
+  2. [A Co-Optimization of Software and Hardware for PCIe-Based Small Packet DMA Transfer](https://ieeexplore.ieee.org/document/10601169)
 
 # Structure
 
