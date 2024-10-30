@@ -12,41 +12,56 @@
 .
 ├── README.md
 ├── example
-│   └── vc709
-│       ├── demo.bit
-│       ├── rm0.bin
-│       └── rm1.bin
+│   └── vc709
 ├── hw
-│   ├── rtl
-│   │   ├── async_fifo.v
-│   │   ├── axil_bridge.v
-│   │   ├── axis_async_fifo.v
-│   │   ├── clk_gen.v
-│   │   ├── common.vh
-│   │   ├── config_buffer.v
-│   │   ├── counter.v
-│   │   ├── edge_dect.v
-│   │   ├── gray_code_sync.v
-│   │   ├── icap_ctrl.v
-│   │   ├── mmcm_drp.v
-│   │   ├── perf_mon.v
-│   │   ├── prc_reg.v
-│   │   ├── prc_top.v
-│   │   ├── reg_mux.v
-│   │   ├── simple_dual_port_ram.v
-│   │   ├── two_stage_sync.v
-│   │   └── width_convert.v
-│   └── xdc
-│       └── prc_timing.xdc
+│   ├── rtl
+│   └── xdc
 └── sw
     ├── sdma
-    │   ├── Makefile
-    │   ├── sdma.h
-    │   ├── sdma_drv.c
-    │   └── sdma_hw.c
-    └── test
-        ├── main.c
-        └── run.sh
+    └── xdma
+
+9 directories, 1 file
+(base) zgs@doraemon Dora % tree -L 3
+.
+├── README.md
+├── example
+│   └── vc709
+│       ├── dora.zip
+│       ├── prc.zip
+│       ├── system_top.bit
+│       ├── u_led_led_0_partial.bit
+│       └── u_led_led_1_partial.bit
+├── hw
+│   ├── rtl
+│   │   ├── async_fifo.v
+│   │   ├── axil_bridge.v
+│   │   ├── axis_async_fifo.v
+│   │   ├── clk_gen.v
+│   │   ├── common.vh
+│   │   ├── config_buffer.v
+│   │   ├── counter.v
+│   │   ├── edge_dect.v
+│   │   ├── gray_code_sync.v
+│   │   ├── icap_ctrl.v
+│   │   ├── mmcm_drp.v
+│   │   ├── perf_mon.v
+│   │   ├── prc_reg.v
+│   │   ├── prc_top.v
+│   │   ├── reg_mux.v
+│   │   ├── simple_dual_port_ram.v
+│   │   ├── two_stage_sync.v
+│   │   └── width_convert.v
+│   └── xdc
+│       └── prc_timing.xdc
+└── sw
+    ├── sdma
+    │   ├── Makefile
+    │   ├── sdma.h
+    │   ├── sdma_drv.c
+    │   ├── sdma_hw.c
+    │   └── tests
+    └── xdma
+        └── linux-kernel
 ```
 
 # Performance
@@ -59,9 +74,9 @@ Experiments show that Dora reduces FPGA resource utilization by over 60%, achiev
 
 All the modules in Dora are self-developed, and it is only necessary to integrate the verilog implementation (/hw/rtl) and timing constraint (/hw/xdc) into the project source code.
 
-## Just for test
+## Just for a test
 
-We provide an example (./example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
+We provide an example (example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
 
 1. Clone the repository
    ```
@@ -70,19 +85,22 @@ We provide an example (./example/vc709) on VC709 Board where users can test our 
 2. Configure the demo.bit
 
 ```shell
-set bit_filepath ./example/demo.bit
+set bit_filepath example/demo.bit
 write_cfgmem -force -format MCS -size 128 -interface BPIx16 -loadbit "up 0x00000000 $bit_filepath" demo.mcs
 ```
 
 3. Install the sdma driver
 
 ```
-source ./test/load_driver.sh
+source sw/sdma/tests/load_driver.sh
 ```
 
-4. Transfer rm0.bin or rm1.bin using driver
+4. Transfer rm0.bin or rm1.bin using driver (Look at the switching results of the led lights)
 
 ```shell
-gcc /test/main.c -o main
-sudo ./main /dev/sdma_dev0 2 ./example/rm0.bin
+gcc sw/sdma/tests/main.c -o main
+sudo ./main /dev/sdma_dev0 2 example/vc709/rm0.bin
+sudo ./main /dev/sdma_dev1 2 example/vc709/rm1.bin
 ```
+
+Tips: In steps 3 and 4 above, you can also use the [XDMA driver](https://github.com/Xilinx/dma_ip_drivers/tree/master/XDMA/linux-kernel) provided by Xilinx or [patched XDMA driver](sw/xdma) provided by us instead of the simple replacement we provided, which is SDMA.
