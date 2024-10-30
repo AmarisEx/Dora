@@ -13,19 +13,6 @@
 ├── README.md
 ├── example
 │   └── vc709
-├── hw
-│   ├── rtl
-│   └── xdc
-└── sw
-    ├── sdma
-    └── xdma
-
-9 directories, 1 file
-(base) zgs@doraemon Dora % tree -L 3
-.
-├── README.md
-├── example
-│   └── vc709
 │       ├── dora.zip
 │       ├── prc.zip
 │       ├── system_top.bit
