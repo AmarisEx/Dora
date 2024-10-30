@@ -82,7 +82,7 @@ We provide an example [example/vc709](example/vc709) on VC709 Board where users 
    ```
    git clone git@github.com:AmarisEx/Dora.git
    ```
-2. Configure the demo.bit
+2. Configure the [demo.bit](example/vc709/demo.bit)
 
 ```shell
 set bit_filepath example/demo.bit
