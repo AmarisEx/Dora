@@ -95,7 +95,7 @@ write_cfgmem -force -format MCS -size 128 -interface BPIx16 -loadbit "up 0x00000
 source sw/sdma/tests/load_driver.sh
 ```
 
-4. Transfer [example/rm0.bin](example/rm0.bin) or [example/rm01.bin](example/rm0.bin) using driver (Look at the switching results of the led lights)
+1. Transfer [rm0.bin](example/vc709/rm0.bin) or [rm1.bin](example/vc709/rm1.bin) using driver (Look at the switching results of the led lights)
 
 ```shell
 gcc sw/sdma/tests/main.c -o main
