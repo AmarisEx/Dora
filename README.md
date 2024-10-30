@@ -72,11 +72,11 @@ Experiments show that Dora reduces FPGA resource utilization by over 60%, achiev
 
 ## For secondary development
 
-All the modules in Dora are self-developed, and it is only necessary to integrate the verilog implementation (/hw/rtl) and timing constraint (/hw/xdc) into the project source code.
+All the modules in Dora are self-developed, and it is only necessary to integrate the verilog implementation [hw/rtl](hw/rtl) and timing constraint [hw/xdc](hw/xdc) into the project source code.
 
 ## Just for a test
 
-We provide an example (example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
+We provide an example [example/vc709](example/vc709) on VC709 Board where users can test our Dora by switching between different lighting applications.
 
 1. Clone the repository
    ```
@@ -95,7 +95,7 @@ write_cfgmem -force -format MCS -size 128 -interface BPIx16 -loadbit "up 0x00000
 source sw/sdma/tests/load_driver.sh
 ```
 
-4. Transfer rm0.bin or rm1.bin using driver (Look at the switching results of the led lights)
+4. Transfer [example/rm0.bin](example/rm0.bin) or [example/rm01.bin](example/rm0.bin) using driver (Look at the switching results of the led lights)
 
 ```shell
 gcc sw/sdma/tests/main.c -o main
